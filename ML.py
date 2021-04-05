@@ -1,6 +1,5 @@
 # Importing required libraries.
 import pandas as pd
-pd.options.mode.chained_assignment = None
 import numpy as np
 import matplotlib.pyplot as plt 
 from sklearn.model_selection import train_test_split
@@ -88,8 +87,8 @@ data_select.sex[data_select.sex == "M"] = 0
 data_select.sex[data_select.sex == "F"] = 1
 
 # select healthy and benign data, uncomment the one you want to use in the prediction
-# used_data = select_data_diagnosis(data_select)
-used_data = select_data_diagnosis(data_select, "benign")
+used_data = select_data_diagnosis(data_select)
+# used_data = select_data_diagnosis(data_select, "benign")
 
 # Split data in predictor and target variables
 y = used_data.diagnosis
@@ -120,12 +119,10 @@ model_rf.fit(x_train, y_train)
 # perform and calculate CV
 scores_rf = cross_val_score(
     model_rf, x_train, y_train, scoring="roc_auc", cv=cv)
-print("Random forest ROC AUC CV scores: %.3f" 
-      % (np.mean(scores_rf)))
+print("Random forest ROC AUC CV scores: %.3f" % (np.mean(scores_rf)))
 
-## Predicting and plotting the data with ROC curve function
-predict_roc(x_test, y_test, model_rf, 
-                      "Random Forest")
+## Predicting the model with ROC curve function
+predict_roc(x_test, y_test, model_rf, "Random Forest")
 
 # plot rf
 plt.plot(fpr, tpr, marker=".", 
@@ -145,11 +142,10 @@ model_lr.fit(x_train, y_train)
 # perform and calculate CV
 scores_lr = cross_val_score(
     model_lr, x_train, y_train, scoring="roc_auc", cv=cv)
-print("Logistic regression ROC AUC CV scores: %.3f" 
-      % (np.mean(scores_lr)))
+print("Logistic regression ROC AUC CV scores: %.3f" % (np.mean(scores_lr)))
 
-predict_roc(x_test, y_test, model_lr, 
-                     "Logistic regression")
+## Predicting the model with ROC curve function
+predict_roc(x_test, y_test, model_lr, "Logistic regression")
 
 # plot lr
 plt.plot(fpr, tpr, marker=".", 
@@ -170,7 +166,6 @@ model_svm.fit(x_train, y_train)
 scores_svm = cross_val_score(
     model_svm, x_train, y_train, scoring="roc_auc", cv=cv)
 print("SVM ROC AUC CV scores: %.3f" % (np.mean(scores_svm)))
-
 
 ## Predict and plot ROC curve with function
 predict_roc(x_test, y_test, model_svm, "SVM")
